@@ -64,7 +64,8 @@ namespace LogReader
             string file;
             try
             {
-                StreamReader r = File.OpenText(filePath);
+                using (StreamReader r = File.OpenText(filePath))
+                {
                 file = r.ReadToEnd();
                 if (!(file.Contains(logID)) && logorsuite == "log")
                 {
@@ -79,6 +80,7 @@ namespace LogReader
                 else
                 {
                     return true;
+                }
                 }
             }
             catch
