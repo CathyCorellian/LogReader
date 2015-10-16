@@ -28,15 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Failed Cases");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Passed Cases");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Case", new System.Windows.Forms.TreeNode[] {
-            treeNode6,
-            treeNode7});
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Script Errors");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Log", new System.Windows.Forms.TreeNode[] {
-            treeNode8,
-            treeNode9});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Failed Cases");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Passed Cases");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Case", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Script Errors");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Log", new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode4});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.treeView = new System.Windows.Forms.TreeView();
             this.test_performance = new System.Windows.Forms.GroupBox();
@@ -65,26 +65,27 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.treeView.Location = new System.Drawing.Point(6, 208);
             this.treeView.Name = "treeView";
-            treeNode6.Name = "failed_case";
-            treeNode6.Text = "Failed Cases";
-            treeNode6.ToolTipText = "Failed Cases";
-            treeNode7.Name = "passed_case";
-            treeNode7.Text = "Passed Cases";
-            treeNode7.ToolTipText = "Passed Cases";
-            treeNode8.Name = "case";
-            treeNode8.Text = "Case";
-            treeNode8.ToolTipText = "Case";
-            treeNode9.Name = "script_error";
-            treeNode9.Text = "Script Errors";
-            treeNode9.ToolTipText = "Script Errors";
-            treeNode10.Name = "Log";
-            treeNode10.Text = "Log";
+            treeNode1.Name = "failed_case";
+            treeNode1.Text = "Failed Cases";
+            treeNode1.ToolTipText = "Failed Cases";
+            treeNode2.Name = "passed_case";
+            treeNode2.Text = "Passed Cases";
+            treeNode2.ToolTipText = "Passed Cases";
+            treeNode3.Name = "case";
+            treeNode3.Text = "Case";
+            treeNode3.ToolTipText = "Case";
+            treeNode4.Name = "script_error";
+            treeNode4.Text = "Script Errors";
+            treeNode4.ToolTipText = "Script Errors";
+            treeNode5.Name = "Log";
+            treeNode5.Text = "Log";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode10});
+            treeNode5});
             this.treeView.Size = new System.Drawing.Size(160, 443);
             this.treeView.TabIndex = 1;
             this.treeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.node_AfterCheck);
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
+            this.treeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView_KeyDown);
             // 
             // test_performance
             // 

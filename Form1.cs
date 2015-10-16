@@ -568,7 +568,58 @@ namespace LogReader
                     this.CheckAllChildNodes(e.Node, e.Node.Checked);
                 }
             }
-        }     //set all child node to checked
+        }
+
+        private void treeView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.C && e.Control)
+            {
+                var stack = new Stack<IEnumerator>();
+                List<string> idStrList = new List<string>();
+
+                var enumerator = treeView.Nodes.GetEnumerator();
+
+                while(true)
+                {
+                    while (enumerator.MoveNext())
+                    {
+                        var item = (TreeNode)enumerator.Current;
+                        if (item.Nodes.Count == 0)
+                        {
+                            if (item.Checked)
+                            {
+                                idStrList.Add(item.Text);
+                            }
+                        }
+                        else
+                        {
+                            stack.Push(enumerator);
+                            enumerator = item.Nodes.GetEnumerator();
+                        }
+                    }
+
+                    if (stack.Count > 0)
+                    {
+                        enumerator = stack.Pop();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                var textString = string.Join(", ", idStrList.ToArray());
+
+                if (!string.IsNullOrEmpty(textString))
+                {
+                    Clipboard.SetText(textString);
+                }
+                
+
+           
+            }
+        }
+
     }
 }
      
