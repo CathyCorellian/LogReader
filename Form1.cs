@@ -66,21 +66,21 @@ namespace LogReader
             {
                 using (StreamReader r = File.OpenText(filePath))
                 {
-                file = r.ReadToEnd();
-                if (!(file.Contains(logID)) && logorsuite == "log")
-                {
-                        MessageBox.Show("Please choose an other Log.");
+                    file = r.ReadToEnd();
+                    if (!(file.Contains(logID)) && logorsuite == "log")
+                    {
+                            MessageBox.Show("Please choose an other Log.");
+                            return false;
+                    }
+                    else if (!(file.Contains(suiteID)) && logorsuite == "suite")
+                    {
+                        MessageBox.Show("Please choose an other Suite.");
                         return false;
-                }
-                else if (!(file.Contains(suiteID)) && logorsuite == "suite")
-                {
-                    MessageBox.Show("Please choose an other Suite.");
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
             }
             catch
@@ -477,24 +477,11 @@ namespace LogReader
         }
         private void createSuite_DragDrop(object sender, DragEventArgs e)
         {
-            if (CheckCheckbox())
-            {
-                string xmlPath = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
-                SaveFileDialog sdlg = new SaveFileDialog();
-                sdlg.Filter = "xml(*.xml)|*.xml";
-                if (GudgeFile(xmlPath, "suite"))
-                {
-                    if (e.Data.ToString() != "")
-                    {
-                        MessageBox.Show("Save New SUITE.");
-                        sdlg.ShowDialog();
-                        if (sdlg.FileName != "")
-                        {
-                            CreateSuite(xmlPath, sdlg.FileName);
-                        }
-                    }
-                }
-            }
+            var xmlPath = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+            if (CheckCheckbox() && GudgeFile(xmlPath, "suite"))
+                using (var sdlg = new SaveFileDialog() { Filter = "xml(*.xml)|*.xml" })
+                    if (sdlg.ShowDialog() == DialogResult.OK)
+                        CreateSuite(xmlPath, sdlg.FileName);
         }
         private bool CheckCheckbox()
         {
