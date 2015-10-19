@@ -29,6 +29,7 @@ namespace LogReader
         {
             InitializeComponent();
         }
+
         private void Form1Load(object sender, EventArgs e)
         {
             name.Text = job_name;
@@ -38,6 +39,7 @@ namespace LogReader
             failed.Text = failed_tests;
             desc_info = Description.Text;
         }
+
         protected class myTreeNode : TreeNode
         {
             public string conText;
@@ -45,6 +47,7 @@ namespace LogReader
             public string owner;
             public ArrayList Description = new ArrayList();
         }  //add new element in myTreeNode
+
         private void MarkFaildRed(RichTextBox discription)
         {
             Regex rx = new Regex(@"\*\*\*   .+", RegexOptions.Multiline);
@@ -88,6 +91,7 @@ namespace LogReader
                 return false;
             }
         }   // If it is a BVT log
+
         private void PassedFailed(string FilePath)  
         {
             StreamReader r = File.OpenText(path);
@@ -112,6 +116,7 @@ namespace LogReader
             }
             r.Close();
         }  //TextBox(Passed ,Failed)
+
         private void GetTreeInfo(string FilePath)
         {
             treeView.Nodes[0].Nodes[0].Nodes[0].Nodes.Clear();         //treeview initialization
@@ -326,6 +331,7 @@ namespace LogReader
                 r.Close();
             }
         }    //ganarate whole treeview
+        
         //private void InputLogClick(object sender, EventArgs e)   
         //{
 
@@ -347,14 +353,17 @@ namespace LogReader
         //        }
         //    }
         //}   //button "input log"
-        private void form_DragEnter(object sender, DragEventArgs e)
+       
+        private void treeView_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop)) 
+            if (e.Data.GetDataPresent(DataFormats.FileDrop) && Path.GetExtension(((string[])e.Data.GetData(DataFormats.FileDrop))[0]).ToLower() == ".log") 
                 e.Effect = DragDropEffects.Copy;
         }//drop enter event
-        private void form_DragDrop(object sender, DragEventArgs e)
+
+        private void treeView_DragDrop(object sender, DragEventArgs e)
         {
             path = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+            this.Text = path;
             if (File.Exists(path))
             {
                 if (GudgeFile(path, "log"))
@@ -365,10 +374,11 @@ namespace LogReader
                     PassedFailed(path);
                     GetTreeInfo(path);
                     this.treeView.CheckBoxes = true;
-                    Create_Suite.Enabled = true;                //active "create suite" button
+                    createSuiteButton.Enabled = true;                //active "create suite" button
                 }
             }
         }//drop enter event
+
         //private void CreateSuiteClick(object sender, EventArgs e)
         //{
         //    string xmlPath;
@@ -398,6 +408,7 @@ namespace LogReader
         //        }
         //    }
         //}      //button "create suite" 
+
         private void CreateSuite(string xmlPath, string FileName)
         {
             try
@@ -468,21 +479,24 @@ namespace LogReader
                 MessageBox.Show(e.Message);
             }
         }       //create suite file
-        private void createSuite_DragEnter(object sender, DragEventArgs e)
+
+        private void createSuiteButton_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (e.Data.GetDataPresent(DataFormats.FileDrop) && Path.GetExtension(((string[])e.Data.GetData(DataFormats.FileDrop))[0]).ToLower() == ".xml") 
             {
                 e.Effect = DragDropEffects.Copy;
             }
         }
-        private void createSuite_DragDrop(object sender, DragEventArgs e)
+
+        private void createSuiteButton_DragDrop(object sender, DragEventArgs e)
         {
             var xmlPath = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
             if (CheckCheckbox() && GudgeFile(xmlPath, "suite"))
-                using (var sdlg = new SaveFileDialog() { Filter = "xml(*.xml)|*.xml" })
+                using (var sdlg = new SaveFileDialog() { Filter = "xml(*.xml)|*.xml", InitialDirectory = Path.GetDirectoryName(xmlPath), FileName = "Failed_" + Path.GetFileNameWithoutExtension(xmlPath) })
                     if (sdlg.ShowDialog() == DialogResult.OK)
                         CreateSuite(xmlPath, sdlg.FileName);
         }
+
         private bool CheckCheckbox()
         {
             bool isCheck = false;
@@ -516,6 +530,7 @@ namespace LogReader
             }
             return isCheck;
         }      //check if any chckbox has been chcked
+
         private void CheckAllChildNodes(TreeNode treeNode, bool isNodeChecked)
         {
             foreach (TreeNode node in treeNode.Nodes)
@@ -527,6 +542,7 @@ namespace LogReader
                 }
             }
         }    //check fall failed case checkboxss
+
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Parent == null)
@@ -546,6 +562,7 @@ namespace LogReader
                 MarkFaildRed(Description);
             }
         }      //selecte node event
+
         private void node_AfterCheck(object sender, TreeViewEventArgs e)
         {
             if (e.Action != TreeViewAction.Unknown)
@@ -607,6 +624,19 @@ namespace LogReader
             }
         }
 
+        private void createSuiteButton_Click(object sender, EventArgs e)
+        {
+            var suiteDirPath = Path.GetDirectoryName(path);
+            var suiteNameStr = Path.GetFileNameWithoutExtension(path);
+            var xmlPath = Path.Combine(suiteDirPath, suiteNameStr + ".xml");
+
+            if (CheckCheckbox() && GudgeFile(xmlPath, "suite"))
+            {
+                using (var sdlg = new SaveFileDialog() { Filter = "xml(*.xml)|*.xml", InitialDirectory = suiteDirPath, FileName = "Failed_" + suiteNameStr })
+                    if (sdlg.ShowDialog() == DialogResult.OK)
+                        CreateSuite(xmlPath, sdlg.FileName);
+            }
+        }
     }
 }
      
