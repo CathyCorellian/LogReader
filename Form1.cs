@@ -63,7 +63,7 @@ namespace LogReader
         private bool GudgeFile(string filePath,string logorsuite) 
         {
             string logID = "BEGIN RUN: ";
-            string suiteID="<?xml version=\"1.0\" encoding=\"us-ascii\"?>";
+            string suiteID="<?xml version=\"1.0\"";
             string file;
             try
             {
